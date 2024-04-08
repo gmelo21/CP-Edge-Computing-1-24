@@ -1,3 +1,4 @@
+// Feito por Guilherme Melo, Bruno Leão, Matheus Amaral, João Henrique Yamamoto.
 // Configurando os elementos e variáveis com os seus PINs.
 
 const int LDR = A0;             
