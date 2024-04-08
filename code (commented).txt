@@ -1,0 +1,78 @@
+// Configurando os elementos e variáveis com os seus PINs.
+
+const int LDR = A0;             
+const int redLight = 13;  
+const int yellowLight = 12;   
+const int greenLight = 11; 
+const int buzzer = 9;
+int sensorValue ;   
+int lightLevel;
+unsigned long changeTime;
+bool alert = false;
+bool playedFirstAlarm = false;
+
+// Configurando o meio de comunicação de entrada ou saída com o Arduino.
+
+void setup() {
+  pinMode(buzzer, OUTPUT);
+  pinMode(redLight, OUTPUT);         
+  pinMode(yellowLight, OUTPUT);
+  pinMode(greenLight, OUTPUT);
+  pinMode(LDR, INPUT); 
+  Serial.begin(9600); // Estabelecendo comunicação serial com taxa de 9600bps.          
+} 
+
+void loop() {
+  sensorValue = analogRead(LDR);
+  Serial.print("Intensidade de Luz 0 - 1023 = "); // Imprime texto “Intensidade de Luz = ” no Serial.
+  Serial.println(sensorValue); // Imprime o valor lido na tela após o sinal de igual do texto acima.
+  lightLevel = map(sensorValue, 108, 969, 0, 100); // Converte o valor para uma escala de 0 a 100
+  Serial.print("Intensidade de Luz 0 - 100% = "); // Imprime a porcentagem da intensidade da luz.
+  Serial.println(lightLevel);
+  
+  if (alert == true && (millis() - changeTime) > 13000) {
+    tone(buzzer, 500, 3000);
+    changeTime = millis();
+  }
+  
+  /* A condição acima verifica se o alarme já foi tocado
+  pelo menos uma vez, e se se fazem 10 segundos desde que
+  o alarme parou de tocar. */
+  
+// Luminosidade alta, perigoso:
+  
+  if (lightLevel < 25 && playedFirstAlarm == false) { 
+    // Acende LED vermelha, desliga os outros. 
+    digitalWrite(redLight, HIGH);  
+    digitalWrite(yellowLight, LOW);
+    digitalWrite(greenLight, LOW);
+    tone(buzzer, 500, 3000); // Toca o buzzer à 500hz, por 3s.
+    alert = true; // Avisa que estamos em situação de alerta.
+    playedFirstAlarm = true; // Avisa que o primeiro alarme (imediato, quando entramos em alerta) foi tocado.
+    changeTime = millis(); // Reseta o timer para verificar quanto tempo desde a última ativação do alarme.
+  }
+  
+// Luminosidade média, não ideal:
+  
+    if (lightLevel >= 25 && 75 >= lightLevel) { 
+    // Acende LED amarelo, desliga os outros. 
+    digitalWrite(redLight, LOW);   
+    digitalWrite(yellowLight, HIGH);
+    digitalWrite(greenLight, LOW);
+    alert = false; // Informa que não estamos em alerta.
+    playedFirstAlarm = false; // Informa que o primeiro alarme não foi tocado, case entremos em situação de alerta.
+    noTone(buzzer); // Desliga o piezo, caso esteja ativo.
+  }
+  
+// Luminosidade baixa, ideal:
+  
+    if (lightLevel > 75) {    
+    // Acende LED verde, desliga os outros. 
+    digitalWrite(redLight, LOW);   
+    digitalWrite(yellowLight, LOW);
+    digitalWrite(greenLight, HIGH);
+    alert = false; // Informa que não estamos em alerta.
+    playedFirstAlarm = false; // Informa que o primeiro alarme não foi tocado, case entremos em situação de alerta.
+    noTone(buzzer); // Desliga o piezo, caso esteja ativo.
+  }
+}
