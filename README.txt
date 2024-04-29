@@ -1,6 +1,6 @@
 Feito por Guilherme Melo, Bruno Leão, Matheus Amaral, João Henrique Yamamoto.
 
-Esse projeto foi criado com a intenção de ser implementado em lugares onde são armazenados vinhos, pois eles precisam ser pouco iluminados para os vinhos continuarem em boa qualidade. O sistema captura a luz ambiente com um LDR (Light Dependent Resistor) e, baseado no nível de luz, um LED é aceso. O verde para caso a iluminação seja ideal, o amarelo para caso seja ideal, e o vermelho para caso a iluminação esteja em situação de perigo para os vinhos. Caso isso ocorra, um piezo é acionado, tocando um alarme por 3 segundos. Caso a situação de alerta continue, o piezo é reacionado depois de 10 segundos desde o fim do último alarme.
+Esse projeto foi criado com a intenção de ser implementado em lugares onde são armazenados vinhos, pois eles precisam ser pouco iluminados para os vinhos continuarem em boa qualidade. O sistema captura a luz ambiente com um LDR (Light Dependent Resistor) e, baseado no nível de luz, um LED é aceso. O verde para caso a iluminação seja ideal, o amarelo para caso seja fora do ideal, e o vermelho para caso a iluminação esteja em situação de perigo para os vinhos. Caso isso ocorra, um piezo é acionado, tocando um alarme por 3 segundos. Caso a situação de alerta continue, o piezo é reacionado depois de 10 segundos desde o fim do último alarme.
 
 Foram usados no projeto:
 - Arduino UNO R3
